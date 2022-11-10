@@ -1,0 +1,9 @@
+#Mongodb connection config
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/project1-db
+
+#Application config
+server:
+  port: 8081
