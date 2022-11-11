@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 
 @Component
@@ -19,6 +17,7 @@ public class DbInit {
     @Autowired
     private TaskRepository taskRepository;
 
+    /*
     @PostConstruct
     private void postConstruct() {
         User u1 = new User("1", "Helena Nito", "hnito56", "hnito@gmail.com", LocalDate.now().minusYears(21));
@@ -42,4 +41,5 @@ public class DbInit {
         userRepository.deleteAll();
         taskRepository.deleteAll();
     }
+    */
 }

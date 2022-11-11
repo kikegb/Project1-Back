@@ -10,16 +10,25 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {
+
+    List<Task> taskList = Arrays.asList(
+            new Task("1", "2", "Homework", "Do homework, like every day.", false),
+            new Task("2", "2", "Wash car", "Go wash the car, it's disgusting.", false),
+            new Task("3", "4", "Take the dog for a walk", "Take the dog for a walk, please.", true)
+    );
+
     @Mock
     private TaskRepository taskRepository;
 
@@ -27,19 +36,14 @@ public class TaskServiceTest {
     private TaskService taskService = new TaskServiceImpl();
 
     @BeforeEach
-    void setUpMock() {
-        when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
+    public void setUpMock() {
+        Mockito.lenient().when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
     }
 
     @DisplayName("Test add task")
     @Test
-    void testAdd() {
-        Task task = new Task(
-                "1",
-                "2",
-                "Work",
-                "Just that, work.",
-                false);
+    public void testAdd() {
+        Task task = taskList.get(0);
 
         assertEquals(task, taskService.add(task));
         verify(taskRepository).save(task);
@@ -47,23 +51,11 @@ public class TaskServiceTest {
 
     @DisplayName("Test find by user id")
     @Test
-    void testFindByUserId() {
-        Task task1 = new Task(
-                "1",
-                "2",
-                "Work",
-                "Just that, work.",
-                false);
-        Task task2 = new Task(
-                "2",
-                "2",
-                "Fix bugs",
-                "Go fix those bugs.",
-                true);
-        List<Task> taskList = List.of(task1, task2);
-        when(taskRepository.findByUserId(task1.getUserId())).thenReturn(taskList);
+    public void testFindByUserId() {
+        List<Task> tasks = taskList.subList(0,2);
+        when(taskRepository.findByUserId(tasks.get(0).getUserId())).thenReturn(tasks);
 
-        assertEquals(taskList, taskService.findByUserId(task1.getUserId()));
-        verify(taskRepository).findByUserId(task1.getUserId());
+        assertEquals(tasks, taskService.findByUserId(tasks.get(0).getUserId()));
+        verify(taskRepository).findByUserId(tasks.get(0).getUserId());
     }
 }
