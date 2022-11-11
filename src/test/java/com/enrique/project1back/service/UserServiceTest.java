@@ -164,7 +164,7 @@ public class UserServiceTest {
         User result = userService.updateName(user.getId(), updatedUser.getName());
         assertEquals(updatedUser, result);
         verify(userRepository).findById(user.getId());
-        verify(userRepository).save(user);
+        verify(userRepository).save(updatedUser);
     }
 
     @DisplayName("Test update name: Id not exists error")
@@ -185,7 +185,7 @@ public class UserServiceTest {
         verifyNoMoreInteractions(userRepository);
     }
 
-    @DisplayName("Test find by id: Success")
+    @DisplayName("Test delete by id: Success")
     @Test
     public void testDeleteById() {
         User user = userList.get(0);
@@ -195,7 +195,7 @@ public class UserServiceTest {
         verify(userRepository).deleteUserById(user.getId());
     }
 
-    @DisplayName("Test find by id: Id not exists error")
+    @DisplayName("Test delete by id: Id not exists error")
     @Test
     public void testDeleteByNonExistentId() {
         User user = userList.get(0);
