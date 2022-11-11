@@ -16,24 +16,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {
 
-    List<Task> taskList = Arrays.asList(
-            new Task("1", "2", "Homework", "Do homework, like every day.", false),
-            new Task("2", "2", "Wash car", "Go wash the car, it's disgusting.", false),
-            new Task("3", "4", "Take the dog for a walk", "Take the dog for a walk, please.", true)
-    );
-
     @Mock
     private TaskRepository taskRepository;
 
     @InjectMocks
     private TaskService taskService = new TaskServiceImpl();
+
+    List<Task> taskList = Arrays.asList(
+            new Task("1", "2", "Homework", "Do homework, like every day.", false),
+            new Task("2", "2", "Wash car", "Go wash the car, it's disgusting.", false),
+            new Task("3", "4", "Take the dog for a walk", "Take the dog for a walk, please.", true)
+    );
 
     @BeforeEach
     public void setUpMock() {

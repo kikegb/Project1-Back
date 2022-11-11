@@ -24,6 +24,12 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserService userService = new UserServiceImpl();
+
     List<User> userList = Arrays.asList(
             new User(
                     "1",
@@ -50,12 +56,6 @@ public class UserServiceTest {
                     "evales@gmail.com",
                     LocalDate.of(1981, 9, 17))
     );
-
-    @Mock
-    private UserRepository userRepository;
-
-    @InjectMocks
-    private UserService userService = new UserServiceImpl();
 
     @BeforeEach
     public void setUpMock() {
