@@ -3,14 +3,12 @@ package com.enrique.project1back.service;
 import com.enrique.project1back.model.User;
 import com.enrique.project1back.repository.UserRepository;
 import com.enrique.project1back.service.impl.UserServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,17 +56,12 @@ public class UserServiceTest {
                     LocalDate.of(1981, 9, 17))
     );
 
-    @BeforeEach
-    public void setUpMock() {
-        Mockito.lenient().when(userRepository.insert(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
-        Mockito.lenient().when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
-    }
-
     @DisplayName("Test add user: Success")
     @Test
     public void testAdd() {
         User user = userList.get(0);
         when(userRepository.existsByEmail(anyString())).thenReturn(false);
+        when(userRepository.insert(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
 
         assertEquals(user, userService.add(user));
         verify(userRepository).existsByEmail(user.getEmail());
@@ -160,6 +153,7 @@ public class UserServiceTest {
                 user.getBirthday()
         );
         when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
 
         User result = userService.updateName(user.getId(), updatedUser.getName());
         assertEquals(updatedUser, result);
@@ -216,6 +210,7 @@ public class UserServiceTest {
                 "storio@gmail.com",
                 LocalDate.of(1999, 8, 23)
         );
+        when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
 
         assertEquals(updatedUser, userService.update(updatedUser));
         verify(userRepository).save(updatedUser);

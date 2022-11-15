@@ -3,14 +3,12 @@ package com.enrique.project1back.service;
 import com.enrique.project1back.model.Task;
 import com.enrique.project1back.repository.TaskRepository;
 import com.enrique.project1back.service.impl.TaskServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,15 +34,12 @@ public class TaskServiceTest {
             new Task("3", "4", "Take the dog for a walk", "Take the dog for a walk, please.", true)
     );
 
-    @BeforeEach
-    public void setUpMock() {
-        Mockito.lenient().when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
-    }
 
     @DisplayName("Test add task: Success")
     @Test
     public void testAdd() {
         Task task = taskList.get(0);
+        when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
 
         assertEquals(task, taskService.add(task));
         verify(taskRepository).save(task);
@@ -114,6 +109,7 @@ public class TaskServiceTest {
                 !task.isDone()
         );
         when(taskRepository.findById(task.getId())).thenReturn(Optional.of(task));
+        when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
 
         Task result = taskService.updateDone(task.getId(), updatedTask.isDone());
         assertEquals(updatedTask, result);
@@ -169,6 +165,7 @@ public class TaskServiceTest {
                 "Wash car ASAP",
                 "It's time, you can't see through the windows.",
                 true);
+        when(taskRepository.save(any(Task.class))).then(AdditionalAnswers.returnsFirstArg());
 
         assertEquals(updatedTask, taskService.update(updatedTask));
         verify(taskRepository).save(updatedTask);
